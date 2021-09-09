@@ -50,21 +50,31 @@ void property_override(char const prop[], char const value[]) {
     __system_property_add(prop, strlen(prop), value, strlen(value));
 }
 
-void load_op8t() {
-  property_override("ro.product.model", "OnePlus 8T");
-  property_override("ro.product.name", "OnePlus8T");
-  property_override("ro.build.product", "OnePlus8T");
+void load_op8t(const char *model) {
+  property_override("ro.product.model", model);
   property_override("ro.product.device", "OnePlus8T");
-  property_override("ro.vendor.product.device", "OnePlus8T");
+  property_override("ro.product.system.model", model);
+  property_override("ro.product.odm.model", model);
+  property_override("ro.product.vendor.model", model);
+  property_override("ro.product.system_ext.model", model);
+  property_override("ro.product.system.device", "OnePlus8T");
+  property_override("ro.product.system_ext.device", "OnePlus8T");
+  property_override("ro.product.odm.device", "OnePlus8T");
+  property_override("ro.product.vendor.device", "OnePlus8T");
   property_override("ro.display.series", "OnePlus 8T");
 }
 
-void load_op9r() {
-  property_override("ro.product.model", "OnePlus 9R");
-  property_override("ro.product.name", "OnePlus9R");
-  property_override("ro.build.product", "OnePlus9R");
+void load_op9r(const char *model) {
+  property_override("ro.product.model", model);
   property_override("ro.product.device", "OnePlus9R");
-  property_override("ro.vendor.product.device", "OnePlus9R");
+  property_override("ro.product.system.model", model);
+  property_override("ro.product.odm.model", model);
+  property_override("ro.product.vendor.model", model);
+  property_override("ro.product.system_ext.model", model);
+  property_override("ro.product.system.device", "OnePlus9R");
+  property_override("ro.product.system_ext.device", "OnePlus9R");
+  property_override("ro.product.odm.device", "OnePlus9R");
+  property_override("ro.product.vendor.device", "OnePlus9R");
   property_override("ro.display.series", "OnePlus 9R");
 }
 
@@ -102,15 +112,58 @@ void vendor_load_properties() {
   switch(project_name){
     case 19805:
       /* OnePlus 8T */
-      load_op8t();
+      switch (rf_version){
+        case 11:
+          /* China */
+          load_op8t("KB2000");
+          break;
+        case 13:
+          /* India */
+          load_op8t("KB2001");
+          break;
+        case 14:
+          /* Europe */
+          load_op8t("KB2003");
+          break;
+        case 15:
+          /* Global / US Unlocked */
+          load_op8t("KB2005");
+          break;
+        default:
+          /* Generic */
+          load_op8t("KB2005");
+          break;
+      }
       break;
     case 20809:
       /* OnePlus 8T T-Mobile */
-      load_op8t();
+      switch (rf_version){
+        case 12:
+          /* T-Mobile */
+          load_op8t("KB2007");
+          break;
+        default:
+          /* Generic */
+          load_op8t("KB2005");
+          break;
+      }
       break;
     case 20828:
       /* OnePlus 9R */
-      load_op9r();
+      switch (rf_version){
+      case 11:
+          /* China */
+          load_op9r("LE2100");
+          break;
+      case 13:
+          /* India */
+          load_op9r("LE2101");
+          break;
+      default:
+          /* Generic */
+          load_op9r("LE2101");
+          break;
+      }
       break;
   }
 
